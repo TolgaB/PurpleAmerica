@@ -71,7 +71,7 @@ public class Main extends Canvas implements Runnable {
 			generateRegions(state, file.toString());
 			System.out.println(" == Created " + fullname + " counties (" + state.subregions.length + ")");
 		}
-		
+		//Storing Election Data
 		File[] electionFiles = new File("./purple/ElectionData").listFiles();
 		List<Stack> electionDataList = new ArrayList<Stack>();
 		for (File elect : electionFiles) {
@@ -82,7 +82,15 @@ public class Main extends Canvas implements Runnable {
 			   fileLines.push(line);
 			}
 			fileLines.push(fileName);
-			electionDataList.add(fileLines);
+			Stack<String> copied = new Stack<String>();
+			copied.addAll(fileLines);
+			electionDataList.add(copied);
+		}
+		//Using the election data
+		for (int i = 0; i < electionDataList.size(); i++) {
+			Stack<String> dataStack = electionDataList.get(i);
+			System.out.println(dataStack.pop());
+			
 		}
 		
 		for (Region state : this.USA.subregions) {
