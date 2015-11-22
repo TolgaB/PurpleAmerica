@@ -77,9 +77,6 @@ public class Main extends Canvas implements Runnable {
 		for (File elect : electionFiles) {
 			Stack<String> fileLines = new Stack<String>();
 			String fileName = elect.getName().replaceFirst(".txt", "");
-			int dem = 0;
-			int rep = 0;
-			int other = 0;
 			BufferedReader br = new BufferedReader(new FileReader(elect));
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
 			   fileLines.push(line);
