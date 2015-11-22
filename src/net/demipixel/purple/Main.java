@@ -89,10 +89,25 @@ public class Main extends Canvas implements Runnable {
 		//Using the election data
 		for (int i = 0; i < electionDataList.size(); i++) {
 			Stack<String> dataStack = electionDataList.get(i);
+			String regionName = null;
 			for (int r = 0; r < dataStack.size(); r++) {
+				Region state = null;
 				if (r == 0) {
 					String stateInitials = dataStack.pop().substring(0, Math.min(dataStack.pop().length(), 2));
-					System.out.println(GenerateStateName(stateInitials));
+				//	System.out.println(GenerateStateName(stateInitials));
+					regionName = GenerateStateName(stateInitials);
+					state = USA.getSubByName(regionName);
+				}
+				else {
+					String segments[] = dataStack.pop().split(",");
+					//System.out.println(segments[0] + segments[1] + segments[2] + segments[3]);
+					System.out.println(segments[0] + "         " + regionName);
+					Region tempRegion = USA.getSubByName(regionName).getSubByName(segments[0]);
+					if (tempRegion != null) {
+					tempRegion.dem = Integer.parseInt(segments[1]);
+					tempRegion.rep = Integer.parseInt(segments[2]);
+					tempRegion.oth = Integer.parseInt(segments[3]);
+					}
 				}
 			}
 			

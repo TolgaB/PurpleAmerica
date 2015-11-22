@@ -60,11 +60,11 @@ public class Region {
 			g.fillPolygon(shape);
 			////////
 		} else {
-			g.setColor(new Color(Math.abs(this.name.hashCode()))); // Random color for testing
+			//g.setColor(new Color(Math.abs(this.name.hashCode()))); // Random color for testing
 			int red = (int) (rep / (dem + rep + oth) * 255);
 			int green = (int) (oth / (dem + rep + oth) * 255);
 			int blue = (int) (dem / (dem + rep + oth) * 255);
-			//g.setColor(new Color(red,green,blue));
+			g.setColor(new Color(red,green,blue));
 			g.fillPolygon(shape);
 		}
 	}
