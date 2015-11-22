@@ -59,6 +59,7 @@ public class Region {
 			////////
 		} else {
 			g.setColor(new Color(Math.abs(this.name.hashCode()))); // Random color for testing
+			
 			int red = (int) (rep / (dem + rep + oth) * 255);
 			int green = (int) (oth / (dem + rep + oth) * 255);
 			int blue = (int) (dem / (dem + rep + oth) * 255);

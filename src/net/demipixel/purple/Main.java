@@ -69,7 +69,7 @@ public class Main extends Canvas implements Runnable {
 				continue;
 			}
 			generateRegions(state, file.toString());
-			System.out.println(" == Created " + fullname + " counties (" + state.subregions.length + ")");
+			//System.out.println(" == Created " + fullname + " counties (" + state.subregions.length + ")");
 		}
 		//Storing Election Data
 		File[] electionFiles = new File("./purple/ElectionData").listFiles();
@@ -77,6 +77,9 @@ public class Main extends Canvas implements Runnable {
 		for (File elect : electionFiles) {
 			Stack<String> fileLines = new Stack<String>();
 			String fileName = elect.getName().replaceFirst(".txt", "");
+			String year = fileName.substring(2, Math.min(fileName.length(), 7));
+			if (year.equals("1960")) {
+			System.out.println(year);
 			BufferedReader br = new BufferedReader(new FileReader(elect));
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
 			   fileLines.push(line);
@@ -85,6 +88,7 @@ public class Main extends Canvas implements Runnable {
 			Stack<String> copied = new Stack<String>();
 			copied.addAll(fileLines);
 			electionDataList.add(copied);
+			}
 		}
 		//Using the election data
 		for (int i = 0; i < electionDataList.size(); i++) {
@@ -101,7 +105,7 @@ public class Main extends Canvas implements Runnable {
 				else {
 					String segments[] = dataStack.pop().split(",");
 					//System.out.println(segments[0] + segments[1] + segments[2] + segments[3]);
-					System.out.println(segments[0] + "         " + regionName);
+			
 					Region tempRegion = USA.getSubByName(regionName).getSubByName(segments[0]);
 					if (tempRegion != null) {
 					tempRegion.dem = Integer.parseInt(segments[1]);
