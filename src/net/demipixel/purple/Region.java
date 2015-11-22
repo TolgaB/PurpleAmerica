@@ -55,12 +55,10 @@ public class Region {
 			g.setColor(new Color(255, 255, 255));
 			g.drawPolygon(shape);
 			// Remove this after testing
-			Color color = new Color(Math.abs(this.name.hashCode()));
-			g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 100)); // Random color for testing
-			g.fillPolygon(shape);
+		
 			////////
 		} else {
-			//g.setColor(new Color(Math.abs(this.name.hashCode()))); // Random color for testing
+			g.setColor(new Color(Math.abs(this.name.hashCode()))); // Random color for testing
 			int red = (int) (rep / (dem + rep + oth) * 255);
 			int green = (int) (oth / (dem + rep + oth) * 255);
 			int blue = (int) (dem / (dem + rep + oth) * 255);
