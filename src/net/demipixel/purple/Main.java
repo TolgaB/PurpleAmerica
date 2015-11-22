@@ -78,8 +78,15 @@ public class Main extends Canvas implements Runnable {
 			Stack<String> fileLines = new Stack<String>();
 			String fileName = elect.getName().replaceFirst(".txt", "");
 			String year = fileName.substring(2, Math.min(fileName.length(), 7));
-			if (year.equals("1960")) {
-			System.out.println(year);
+			boolean hello = false;
+			
+			if (fileName.equals("USA1960")) {
+				hello = true;
+			}
+			else {
+				hello = false;
+			}
+			if (year.equals("1960") || hello == true) {
 			BufferedReader br = new BufferedReader(new FileReader(elect));
 			for (String line = br.readLine(); line != null; line = br.readLine()) {
 			   fileLines.push(line);
@@ -97,16 +104,31 @@ public class Main extends Canvas implements Runnable {
 			for (int r = 0; r < dataStack.size(); r++) {
 				Region state = null;
 				if (r == 0) {
+					//System.out.println(dataStack.peek());
+					if (dataStack.peek().equals("USA1960")) {
+						String stateInitials = dataStack.pop().substring(0, Math.min(dataStack.pop().length(), 3));
+						//	System.out.println(GenerateStateName(stateInitials));
+							regionName = GenerateStateName(stateInitials);
+					}
+					else {
 					String stateInitials = dataStack.pop().substring(0, Math.min(dataStack.pop().length(), 2));
 				//	System.out.println(GenerateStateName(stateInitials));
 					regionName = GenerateStateName(stateInitials);
 					state = USA.getSubByName(regionName);
+					}
 				}
 				else {
 					String segments[] = dataStack.pop().split(",");
 					//System.out.println(segments[0] + segments[1] + segments[2] + segments[3]);
-			
-					Region tempRegion = USA.getSubByName(regionName).getSubByName(segments[0]);
+					//System.out.println(regionName);
+					Region tempRegion;
+					if (regionName.equals("United States")) {
+						tempRegion = USA.getSubByName(segments[0]);
+						System.out.println(segments[0]);
+					}
+					else {
+					tempRegion = USA.getSubByName(regionName).getSubByName(segments[0]);
+					}
 					if (tempRegion != null) {
 					tempRegion.dem = Integer.parseInt(segments[1]);
 					tempRegion.rep = Integer.parseInt(segments[2]);
@@ -195,6 +217,7 @@ public class Main extends Canvas implements Runnable {
 		states.put("Wisconsin","WI");
 		states.put("Wyoming","WY");
 		states.put("Yukon Territory","YT");
+		states.put("United States", "USA");
 		HashMap<String, String> reversedHashMap = new HashMap<String, String>();
 		for (String i : states.keySet()) {
 		    reversedHashMap.put(states.get(i), i);
