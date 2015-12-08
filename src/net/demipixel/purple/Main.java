@@ -72,67 +72,76 @@ public class Main extends Canvas implements Runnable {
 			//System.out.println(" == Created " + fullname + " counties (" + state.subregions.length + ")");
 		}
 		//Storing Election Data
+		String testYear = "2008";
 		File[] electionFiles = new File("./purple/ElectionData").listFiles();
 		List<Stack> electionDataList = new ArrayList<Stack>();
 		for (File elect : electionFiles) {
 			Stack<String> fileLines = new Stack<String>();
+			
 			String fileName = elect.getName().replaceFirst(".txt", "");
+			String name = fileName.replaceFirst(testYear, "");
 			String year = fileName.substring(2, Math.min(fileName.length(), 7));
 			boolean hello = false;
-			
-			if (fileName.equals("USA1960")) {
+			if (fileName.equals("USA" + testYear)) {
 				hello = true;
 			}
 			else {
 				hello = false;
 			}
-			if (year.equals("1960") || hello == true) {
-			BufferedReader br = new BufferedReader(new FileReader(elect));
-			for (String line = br.readLine(); line != null; line = br.readLine()) {
-			   fileLines.push(line);
-			}
-			fileLines.push(fileName);
-			Stack<String> copied = new Stack<String>();
-			copied.addAll(fileLines);
-			electionDataList.add(copied);
+			if (year.equals(testYear) || hello == true) {
+				BufferedReader br = new BufferedReader(new FileReader(elect));
+				for (String line = br.readLine(); line != null; line = br.readLine()) {
+				   fileLines.push(line);
+				}
+				fileLines.push(fileName);
+				Stack<String> copied = new Stack<String>();
+				copied.addAll(fileLines);
+				electionDataList.add(copied);
 			}
 		}
 		//Using the election data
 		for (int i = 0; i < electionDataList.size(); i++) {
 			Stack<String> dataStack = electionDataList.get(i);
 			String regionName = null;
-			for (int r = 0; r < dataStack.size(); r++) {
+			System.out.println("Size: " + dataStack.size());
+			int size = dataStack.size();
+			for (int r = 0; r < size; r++) {
+				System.out.println(r);
 				Region state = null;
 				if (r == 0) {
 					//System.out.println(dataStack.peek());
-					if (dataStack.peek().equals("USA1960")) {
-						String stateInitials = dataStack.pop().substring(0, Math.min(dataStack.pop().length(), 3));
+					if (dataStack.peek().equals("USA" + testYear)) {
+						String stateInitials = dataStack.peek().substring(0, Math.min(dataStack.pop().length(), 3));
 						//	System.out.println(GenerateStateName(stateInitials));
 							regionName = GenerateStateName(stateInitials);
 					}
 					else {
-					String stateInitials = dataStack.pop().substring(0, Math.min(dataStack.pop().length(), 2));
-				//	System.out.println(GenerateStateName(stateInitials));
-					regionName = GenerateStateName(stateInitials);
-					state = USA.getSubByName(regionName);
+						String stateInitials = dataStack.pop().substring(0, 2);
+					//	System.out.println(GenerateStateName(stateInitials));
+						regionName = GenerateStateName(stateInitials);
+						System.out.println("Region: " + regionName);
+						state = USA.getSubByName(regionName);
+						if (state.subregions != null) System.out.println("Length: " + state.subregions.length);
 					}
 				}
 				else {
 					String segments[] = dataStack.pop().split(",");
 					//System.out.println(segments[0] + segments[1] + segments[2] + segments[3]);
 					//System.out.println(regionName);
+					if (regionName.equals("Florida")) System.out.println("Segments: " + segments[0]);
 					Region tempRegion;
 					if (regionName.equals("United States")) {
 						tempRegion = USA.getSubByName(segments[0]);
 						System.out.println(segments[0]);
 					}
 					else {
-					tempRegion = USA.getSubByName(regionName).getSubByName(segments[0]);
+						tempRegion = USA.getSubByName(regionName).getSubByName(segments[0]);
 					}
 					if (tempRegion != null) {
-					tempRegion.dem = Integer.parseInt(segments[1]);
-					tempRegion.rep = Integer.parseInt(segments[2]);
-					tempRegion.oth = Integer.parseInt(segments[3]);
+						if (tempRegion.equals("Lassen")) System.out.println("LLLLAAASSSSSS");
+						tempRegion.dem = Integer.parseInt(segments[1]);
+						tempRegion.rep = Integer.parseInt(segments[2]);
+						tempRegion.oth = Integer.parseInt(segments[3]);
 					}
 				}
 			}
@@ -152,7 +161,7 @@ public class Main extends Canvas implements Runnable {
 		states.put("American Samoa","AS");
 		states.put("Arizona","AZ");
 		states.put("Arkansas","AR");
-		states.put("Armed Forces (AE)","AE");
+		states.put("Armed Forces","AE");
 		states.put("Armed Forces Americas","AA");
 		states.put("Armed Forces Pacific","AP");
 		states.put("British Columbia","BC");
@@ -160,7 +169,7 @@ public class Main extends Canvas implements Runnable {
 		states.put("Colorado","CO");
 		states.put("Connecticut","CT");
 		states.put("Delaware","DE");
-		states.put("District Of Columbia","DC");
+		states.put("District of Columbia","DC");
 		states.put("Florida","FL");
 		states.put("Georgia","GA");
 		states.put("Guam","GU");
@@ -244,6 +253,7 @@ public class Main extends Canvas implements Runnable {
 				if (current != null) { // Have current state
 					if (positionDown == 0) { // Create region with name
 						current.name = l;
+						System.out.println("NAME LINE: " + l);
 						if (reverseHash.get(current.name) == null && file.equals("./purple/USA.txt")) {
 							//System.out.println("NO HASH FOR " + current.name);
 							//System.out.println(reverseHash.get("California"));
@@ -347,11 +357,11 @@ public class Main extends Canvas implements Runnable {
 			g.setColor(new Color(0, 0, 0));
 			g.fillRect(0, 0, this.width, this.height);
 			for (Region state : this.USA.subregions) {
+				state.draw(g, scaleX, -scaleY, offsetX, offsetY);
 				for (Region county : state.subregions) {
-					county.draw(g, scaleX, -scaleY, offsetX, offsetY);
+				county.draw(g, scaleX, -scaleY, offsetX, offsetY);
 				}
 				
-				state.draw(g, scaleX, -scaleY, offsetX, offsetY);
 			}
 		}
 		g.dispose();

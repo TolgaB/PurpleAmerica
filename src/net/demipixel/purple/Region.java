@@ -51,19 +51,18 @@ public class Region {
 		Polygon shape = new Polygon(x, y, x.length);
 		
 		
-		if (this.parentregion.equals("USA")) {
+		/*if (this.parentregion.equals("USA")) {
 			g.setColor(new Color(255, 255, 255));
 			g.drawPolygon(shape);
-			// Remove this after testing
-		
-			////////
 		} else {
-			g.setColor(new Color(Math.abs(this.name.hashCode()))); // Random color for testing
-		//
-			int red = (int) (rep / (dem + rep + oth) * 255);
-			int green = (int) (oth / (dem + rep + oth) * 255);
-			int blue = (int) (dem / (dem + rep + oth) * 255);
-			g.setColor(new Color(red,green,blue));
+			g.setColor(new Color(0, 0, 0));
+			g.drawPolygon(shape);
+		}*/
+		int red = (int) (rep / (dem + rep + oth) * 255);
+		int green = (int) (oth / (dem + rep + oth) * 255);
+		int blue = (int) (dem / (dem + rep + oth) * 255);
+		g.setColor(new Color(red,green,blue));
+		if (red + green + blue > 0) {
 			g.fillPolygon(shape);
 		}
 	}
