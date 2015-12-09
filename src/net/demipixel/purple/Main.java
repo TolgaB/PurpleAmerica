@@ -72,7 +72,7 @@ public class Main extends Canvas implements Runnable {
 			//System.out.println(" == Created " + fullname + " counties (" + state.subregions.length + ")");
 		}
 		//Storing Election Data
-		String testYear = "2008";
+		String testYear = "2004";
 		File[] electionFiles = new File("./purple/ElectionData").listFiles();
 		List<Stack> electionDataList = new ArrayList<Stack>();
 		for (File elect : electionFiles) {
@@ -121,7 +121,6 @@ public class Main extends Canvas implements Runnable {
 						regionName = GenerateStateName(stateInitials);
 						System.out.println("Region: " + regionName);
 						state = USA.getSubByName(regionName);
-						if (state.subregions != null) System.out.println("Length: " + state.subregions.length);
 					}
 				}
 				else {
@@ -357,10 +356,12 @@ public class Main extends Canvas implements Runnable {
 			g.setColor(new Color(0, 0, 0));
 			g.fillRect(0, 0, this.width, this.height);
 			for (Region state : this.USA.subregions) {
-				state.draw(g, scaleX, -scaleY, offsetX, offsetY);
-				for (Region county : state.subregions) {
-				county.draw(g, scaleX, -scaleY, offsetX, offsetY);
+				state.draw(g, scaleX, -scaleY, offsetX, offsetY, false); // Fill
+				/*for (Region county : state.subregions) {
+					county.draw(g, scaleX, -scaleY, offsetX, offsetY, false); // Fill
+					county.draw(g, scaleX, -scaleY, offsetX, offsetY, true); // Outline
 				}
+				state.draw(g, scaleX, -scaleY, offsetX, offsetY, true); // Outline*/
 				
 			}
 		}

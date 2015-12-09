@@ -44,7 +44,7 @@ public class Region {
 		return null;
 	}
 	
-	public void draw(Graphics g, double scaleX, double scaleY, double offsetX, double offsetY) {
+	public void draw(Graphics g, double scaleX, double scaleY, double offsetX, double offsetY, boolean outline) {
 		int[] x = scalePoints(this.xPoints, scaleX, offsetX);
 		int[] y = scalePoints(this.yPoints, scaleY, offsetY);
 		
@@ -63,7 +63,18 @@ public class Region {
 		int blue = (int) (dem / (dem + rep + oth) * 255);
 		g.setColor(new Color(red,green,blue));
 		if (red + green + blue > 0) {
-			g.fillPolygon(shape);
+			if (!outline) {
+				g.fillPolygon(shape);
+			} else {
+				if (!this.parentregion.equals("USA")) {
+					g.setColor(new Color(255, 255, 255, 60));
+					g.drawPolygon(shape);
+				} else {
+					g.setColor(new Color(255, 255, 255));
+					g.drawPolygon(shape);
+				}
+			}
+			
 		}
 	}
 	
