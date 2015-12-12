@@ -37,9 +37,10 @@ public class Region {
 		this.maxY = Math.max(this.maxY, y);
 	}
 	
-	public Region getSubByName(String name) {
+	public Region getSubByName(String name, Boolean firstOnly) {
 		for (Region region : this.subregions) {
-			if (region.name.equals(name)) return region;
+			if (region.name.equals(name) && !firstOnly) return region;
+			else if (region.name.split(" ")[0].equals(name)) return region;
 		}
 		return null;
 	}
@@ -50,38 +51,30 @@ public class Region {
 		
 		Polygon shape = new Polygon(x, y, x.length);
 		
+		//if (this.parentregion.equals("LA")) System.out.println("LA" + Arrays.toString(x));
+		//if (this.parentregion.equals("MS")) System.out.println("MS" + Arrays.toString(x));
 		
-		/*if (this.parentregion.equals("USA")) {
-			g.setColor(new Color(255, 255, 255));
-			g.drawPolygon(shape);
-		} else {
-			g.setColor(new Color(0, 0, 0));
-			g.drawPolygon(shape);
-		}*/
 		int red = (int) (rep / (dem + rep + oth) * 255);
 		int green = (int) (oth / (dem + rep + oth) * 255);
 		int blue = (int) (dem / (dem + rep + oth) * 255);
 		g.setColor(new Color(red,green,blue));
-		if (red + green + blue > 0) {
-			if (!outline) {
-				g.fillPolygon(shape);
+		if (!outline) {
+			if (red + green + blue <= 0) g.setColor(new Color(150, 2, 100));
+			g.fillPolygon(shape);
+		} else if (outline) {
+			if (!this.parentregion.equals("USA")) {
+				g.setColor(new Color(255, 255, 255, 60));
+				g.drawPolygon(shape);
 			} else {
-				if (!this.parentregion.equals("USA")) {
-					g.setColor(new Color(255, 255, 255, 60));
-					g.drawPolygon(shape);
-				} else {
-					g.setColor(new Color(255, 255, 255));
-					g.drawPolygon(shape);
-				}
+				g.setColor(new Color(255, 255, 255));
+				g.drawPolygon(shape);
 			}
-			
 		}
 	}
 	
 	private int[] scalePoints(int[] points, double scale, double offset) {
 		int[] newPoints = new int[points.length];
 		for (int n = 0; n < newPoints.length; n++) {
-			//System.out.println(points[n] + "*" + scale + " + " + offset + " = " + (points[n] * scale + offset));
 			newPoints[n] = (int)Math.round(points[n] * scale + offset);
 		}
 		return newPoints;
